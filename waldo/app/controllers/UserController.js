@@ -122,18 +122,41 @@ class UserController {
                         if (err) {
                             res.status(500).send(err);
                         }
+                        let included = [];
+                        included.push({
+                            type: "Profile",
+                            id: profileId,
+                            attributes: profile,
+                            relationships: {
+                                skills: {
+                                    data: []
+                                },
+                                occupations: {
+                                    data: []
+                                },
+                                education: {
+                                    data: []
+                                },
+                                experience: {
+                                    data: []
+                                }                      
+                            }
+                        });
                         res.json({
                             data: {
                                 id: user._id,
-                                type: String
-                            },
-                            relationships: {
-                                profile: {
-                                    attributes: profile,
-                                    id: profileId,
-                                    type: "Profile"
+                                type: "User",
+                                attributes: user,
+                                relationships: {
+                                    profile: {
+                                        data: {
+                                            id: profileId,
+                                            type: "Profile"
+                                        }
+                                    }
                                 }
-                            }
+                            },
+                            included: included
                         });
                     });
 
@@ -142,7 +165,7 @@ class UserController {
                 res.status(400).send("Bad request, body needs to include body.data.attributes\nYou sent: " + JSON.stringify(req.body));
             }
         };
-    };
+    }
 }
 
 blueprint.controller(UserController);
