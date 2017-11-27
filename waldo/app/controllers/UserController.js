@@ -52,7 +52,7 @@ class UserController {
                                             if (err) {
                                                 res.status(500).send(err);
                                             }
-
+                                            //TODO: Update Response to use JSON API
                                             res.json({
                                                 data: {
                                                     id: user._id,
