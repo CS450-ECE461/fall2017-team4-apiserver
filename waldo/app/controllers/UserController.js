@@ -1,6 +1,5 @@
 let blueprint = require('@onehilltech/blueprint');
 let mongodb = require('@onehilltech/blueprint-mongodb');
-let _ = require("lodash");
 let util = require('util');
 let User = require('../models/User');
 let Profile = require('../models/Profile');
@@ -53,7 +52,7 @@ class UserController {
                                             if (err) {
                                                 res.status(500).send(err);
                                             }
-                                            //TODO: Update Response to use JSON API
+
                                             let included = [];
                                             included.push({
                                                 type: "Profile",
@@ -99,7 +98,7 @@ class UserController {
                                             included.concat(occupation);
                                             included.concat(education);
                                             included.concat(expirience);
-                                            
+
                                             res.json({
                                                 data: {
                                                     id: user._id,
