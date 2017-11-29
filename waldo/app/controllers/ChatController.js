@@ -77,7 +77,34 @@ class ChatController {
     }
 
     sendMessage() {
-
+        const conversationId = req.params.conversationId;
+        const newMessage = req.body.attributes;
+        Message.create({
+            conversationId: conversationId,
+            body: newMessage.body,
+            fromId: newMessage.fromId,
+            timestamp: new Date(),
+            _id: new ObjectId()
+        }, (err, message) => {
+            if (err) {
+                res.status(500).json({
+                    errors: [{
+                        status: 500,
+                        source: {pointer : 'POST /chats/:conversationId'},
+                        title: "Unable to Send Message",
+                        detail: err
+                    }]
+                });
+            } else {
+                res.json({
+                    data: {
+                        id: message._id,
+                        type: "Message"
+                    },
+                    attributes: message
+                });
+            }
+        });
     }
 
     getConversationsByUser() {
