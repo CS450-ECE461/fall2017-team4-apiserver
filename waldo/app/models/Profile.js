@@ -8,10 +8,6 @@ var schema = mongodb.Schema({
   isNull: {type: Boolean},
   portfolio: {type: String},
   resume: {type: String},
-  occupationId: {type: String},
-  expirienceId: {type: String},
-  educationId: {type: String},
-  skillId: {type: String},
   _id: {type: String}
 });
 

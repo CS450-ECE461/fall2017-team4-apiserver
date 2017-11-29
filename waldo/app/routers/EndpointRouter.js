@@ -4,14 +4,10 @@ const cors = require ('cors');
 const gatekeeper = require('@onehilltech/blueprint-gatekeeper');
 
 const corsOptions = {
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  origin: "*"
 };
 
 module.exports = {
-  '/v1': {
-    use: [
-      cors (corsOptions),
-    ],
-    policy: 'gatekeeper.auth.bearer'
-  }
+  '/v1': cors(corsOptions)
 };

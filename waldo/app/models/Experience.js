@@ -1,19 +1,15 @@
-'use strict';
-
-const mongodb = require ('@onehilltech/blueprint-mongodb')
-  ;
+const mongodb = require('@onehilltech/blueprint-mongodb');
 
 var schema = new mongodb.Schema({
   icon: {type: String},
   title: {type: String},
   companyName: {type: String},
-  location : {
-      longitude: {type: Number},
-      latitude: {type: Number}
-  },
+  city: {type: String},
+  state: {type: String},
   startDate: {type: Date},
   endDate: {type: Date},
   about: {type: String},
+  profileId: {type: String},
   _id: {type: String}
 });
 
