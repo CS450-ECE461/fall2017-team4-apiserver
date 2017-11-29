@@ -38,9 +38,9 @@ class EducationController {
                     res.json({
                         data: {
                             id: education._id,
-                            type: 'Education',
-                            attributes: education
-                        }
+                            type: 'Education'
+                        },
+                        attributes: education
                     });
                 }
             });
@@ -61,9 +61,9 @@ class EducationController {
                     res.json({
                         data: {
                             id: education._id,
-                            type: 'Education',
-                            attributes: education
-                        }
+                            type: 'Education'
+                        },
+                        attributes: education
                     });
                 }
             })
@@ -82,10 +82,11 @@ class EducationController {
                     res.json({
                         data: {
                             id: 1,
-                            type: 'Message',
-                            attributes: {
-                                message: "Education Document was deleted. {_id: " + req.params.educationId + "}"
-                            }
+                            type: 'Message'
+                        },
+                        attributes: {
+                            id: 1,
+                            message: "Education Document was deleted. {_id: " + req.params.educationId + "}"
                         }
                     });
                 }
@@ -121,8 +122,10 @@ class EducationController {
                             res.status(500).send(err);
                         } else {
                             res.json({
-                                id: callbackEducation._id,
-                                type: 'Education',
+                                data: {
+                                    id: callbackEducation._id,
+                                    type: 'Education'
+                                },
                                 attributes: callbackEducation 
                             });
                         }
@@ -145,10 +148,10 @@ class EducationController {
                         data : education.map((i) => {
                             return {
                                 id: i._id,
-                                type: 'Education',
-                                attributes: i
+                                type: 'Education'
                             };
-                        })
+                        }),
+                        attributes: education                        
                     });
                 }
             });

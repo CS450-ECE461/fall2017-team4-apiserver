@@ -8,7 +8,7 @@ module.exports = exports = {
         put: {action : 'OccupationController@update'},
         delete: {action : 'OccupationController@delete'}
     },
-    '/profiles/occupations/:profileId': {
+    '/profiles/:profileId/occupations': {
         get: {action: 'OccupationController@getByProfile'}
     }
-}
+};
