@@ -1,13 +1,13 @@
 module.exports = exports ={
-    '/v1/experience/:profileId' : {
+    '/experiences/:profileId' : {
         post: {action : 'ExperienceController@add'}
     },
-    '/v1/experience/:experienceId' : {
+    '/experiences/:experienceId' : {
         get: {action : 'ExperienceController@getOne'},
         put: {action : 'ExperienceController@update'},
         delete: {action : 'ExperienceController@delete'}
     },
-    '/v1/profile/experience/:profileId' : {
+    '/profiles/experiences/:profileId' : {
         get: {action: 'ExperienceController@getByProfile'}
     }
 }
