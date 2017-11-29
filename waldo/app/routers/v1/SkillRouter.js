@@ -10,4 +10,4 @@ module.exports = exports = {
     '/profiles/:profileId/skills' : {
         get: {action : 'SkillController@getByProfile'}
     }
-}
+};
