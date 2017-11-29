@@ -18,7 +18,14 @@ class SkillController {
                _id: new ObjectId() 
             }, (err, skill) => {
                 if (err) {
-                    //TODO: Write Error response
+                    res.status(500).json({
+                        errors: [{
+                            status: 500,
+                            source: {pointer : 'POST /skills'},
+                            title: "Unable to Create Skill",
+                            detail: err
+                        }]
+                    });
                 } else {
                     res.json({
                         data: {
@@ -34,14 +41,44 @@ class SkillController {
 
     getAllSkills() {
         return (req, res) => {
-            
-        }
+            Skill.find({}, {}, (err, skills) => {
+                if (err) {
+                    res.status(500).json({
+                        errors: [{
+                            status: 500,
+                            source: {pointer : 'GET /skills'},
+                            title: "Unable to Get Skills",
+                            detail: err
+                        }]
+                    });
+                } else if (skills == null || skills.length == 0) {
+                    res.status(404).json({
+                        errors: [{
+                            status: 404,
+                            source: {pointer : 'GET /skills'},
+                            title: "Unable to Find any Skills",
+                            detail: "No skills were found"
+                        }]
+                    });
+                } else {
+                    res.json({
+                        data: skills.map((skill) => {
+                            return {
+                                id: skill._id,
+                                type: "Skill"
+                            };
+                        }),
+                        attributes: skills
+                    });
+                }
+            });
+        };
     }
 
     addNewSkillToProfile() {
         return (req, res) => {
             
-        }
+        };
     }
 
     removeSkillFromProfile() {
