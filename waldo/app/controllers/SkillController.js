@@ -77,7 +77,63 @@ class SkillController {
 
     addNewSkillToProfile() {
         return (req, res) => {
-            
+            ProfileSkillAssociation.create({
+                profileId: req.params.profileId,
+                skillId: req.params.skillId,
+                _id: new ObjectId()
+            }, (err, profileSkillAssociation) => {
+                if (err) {
+                    res.status(500).json({
+                        errors: [{
+                            status: 500,
+                            source: {pointer : 'POST /profiles/:profileId/skills/:skillId'},
+                            title: "Unable to Create Skill Profile Association",
+                            detail: err
+                        }]
+                    });
+                } else {
+                    Skill.find({_id: profileSkillAssociation.skillId}, {}, (err, skill) => {
+                        if (err) {
+                            res.status(500).json({
+                                errors: [{
+                                    status: 500,
+                                    source: {pointer : 'POST /profiles/:profileId/skills/:skillId'},
+                                    title: "Unable to Find Skill",
+                                    detail: err
+                                }]
+                            });
+                        } else if (skill == null) {
+                            res.status(404).json({
+                                errors: [{
+                                    status: 404,
+                                    source: {pointer : 'POST /profiles/:profileId/skills/:skillId'},
+                                    title: "No skill with that Id was found\nskillId: " + profileSkillAssociation.skillId,
+                                    detail: err
+                                }]
+                            });
+                        } else {
+                            res.json({
+                                data: {
+                                    id: profileSkillAssociation._id,
+                                    type: "ProfileSkillAssociation"
+                                },
+                                attributes: profileSkillAssociation,
+                                relationships: {
+                                    skill: {
+                                        data: {
+                                            id: profileSkillAssociation.skillId,
+                                            type: "Skill"
+                                        }
+                                    }
+                                },
+                                included: [
+                                    skill
+                                ]
+                            });
+                        }
+                    });
+                }
+            });
         };
     }
 
