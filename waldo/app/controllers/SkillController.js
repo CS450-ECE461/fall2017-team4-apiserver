@@ -139,8 +139,33 @@ class SkillController {
 
     removeSkillFromProfile() {
         return (req, res) => {
-            
-        }
+            ProfileSkillAssociation.remove({
+                profileId: req.params.profileId,
+                skillId: req.params.skillId
+            }, (err) => {
+                if (err) {
+                    res.status(500).json({
+                            errors: [{
+                                status: 500,
+                                source: {pointer : 'DELETE /profiles/:profileId/skills/:skillId'},
+                                title: "Unable to Remove ProfileSkillAssociation\nprofileId " + req.params.profileId + "\tskillId: " + req.params.skillId,
+                                detail: err
+                            }]
+                        });
+                } else {
+                    res.json({
+                        data: {
+                            id: 1,
+                            type: 'Message'
+                        },
+                        attributes: {
+                            id: 1,
+                            message: "ProfileSkillAssociation Document was deleted. {profileId: " + req.params.profileId + ",skillId: " + req.params.skillId + "}"
+                        }
+                    });
+                } 
+            });
+        };
     }
 
     getByProfile() {
