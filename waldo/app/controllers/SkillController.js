@@ -10,6 +10,36 @@ class SkillController {
     constructor() {
         blueprint.BaseController.call(this);
     }
+
+    add() {
+        return (req, res) => {
+
+        }
+    }
+
+    getAllSkills() {
+        return (req, res) => {
+            
+        }
+    }
+
+    addNewSkillToProfile() {
+        return (req, res) => {
+            
+        }
+    }
+
+    removeSkillFromProfile() {
+        return (req, res) => {
+            
+        }
+    }
+
+    getByProfile() {
+        return (req, res) => {
+            
+        }
+    }
 }
 
 blueprint.controller(SkillController);
