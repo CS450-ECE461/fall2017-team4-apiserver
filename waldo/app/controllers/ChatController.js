@@ -108,7 +108,38 @@ class ChatController {
     }
 
     getConversationsByUser() {
-
+        const userId = req.params.userId;
+        Conversation.find({userId: userId}, {}, (err, conversations) => {
+            if (err) {
+                res.status(500).json({
+                    errors: [{
+                        status: 500,
+                        source: {pointer : 'GET /users/:userId/chats'},
+                        title: "Unable to Find Conversations from User",
+                        detail: err
+                    }]
+                });
+            } else if (messages == null || messages.lenth == 0) {
+                res.status(404).json({
+                    errors: [{
+                        status: 404,
+                        source: {pointer : 'GET /users/:userId/chats'},
+                        title: "Unable to Find Conversations from User",
+                        detail: "No Conversations with that userId were found\nuserId: " + userId
+                    }]
+                });
+            } else {
+                res.json({
+                    data: conversations.map(conversation => {
+                        return {
+                            id: conversation._id,
+                            type: "Conversation"
+                        };
+                    }),
+                    attributes: conversations
+                });
+            }
+        });
     }
 }
 
