@@ -11,4 +11,4 @@ module.exports = exports = {
     '/profiles/:profileId/occupations': {
         get: {action: 'OccupationController@getByProfile'}
     }
-}
+};
