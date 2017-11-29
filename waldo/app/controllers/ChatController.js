@@ -10,6 +10,9 @@ class ChatController {
         blueprint.BaseController.call(this);
     }
 
+    /**
+     * This controller handles the creation of a new Conversation.
+     */
     add() {
         const newConversation = req.body.data.attributes;
         Conversation.create({
@@ -39,7 +42,38 @@ class ChatController {
     }
 
     getMessages() {
-
+        const conversationId = req.params.conversationId;
+        Message.find({conversationId: conversationId}, {}, (err, messages) => {
+            if (err) {
+                res.status(500).json({
+                    errors: [{
+                        status: 500,
+                        source: {pointer : 'GET /chats/:conversationId'},
+                        title: "Unable to Find messages of Conversation",
+                        detail: err
+                    }]
+                });
+            } else if (messages == null || messages.lenth == 0) {
+                res.status(404).json({
+                    errors: [{
+                        status: 404,
+                        source: {pointer : 'GET /chats/:conversationId'},
+                        title: "Unable to Find messages of Conversation",
+                        detail: "No messages with that conversationId were found\nconversationId: " + conversationId
+                    }]
+                });
+            } else {
+                res.json({
+                    data: messages.map(m => {
+                        return {
+                            id: m._id,
+                            type: "Message"
+                        };
+                    }),
+                    attributes: messages
+                });
+            }
+        });
     }
 
     sendMessage() {
