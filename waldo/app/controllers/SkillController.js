@@ -13,8 +13,23 @@ class SkillController {
 
     add() {
         return (req, res) => {
-
-        }
+            Skill.create({
+               name: req.body.attributes.name,
+               _id: new ObjectId() 
+            }, (err, skill) => {
+                if (err) {
+                    //TODO: Write Error response
+                } else {
+                    res.json({
+                        data: {
+                            id: skill._id,
+                            type: "Skill"
+                        },
+                        attributes: skill
+                    });
+                }
+            });
+        };
     }
 
     getAllSkills() {
