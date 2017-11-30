@@ -1,3 +1,5 @@
+import { retry } from '../../../../../../.cache/typescript/2.6/node_modules/@types/async';
+
 const blueprint = require('@onehilltech/blueprint');
 const mongodb = require('@onehilltech/blueprint-mongodb');
 const ObjectId = require('@onehilltech/blueprint-mongodb').Types.ObjectId;
@@ -170,8 +172,74 @@ class SkillController {
 
     getByProfile() {
         return (req, res) => {
-            
-        }
+            ProfileSkillAssociation.find({profileId:req.params.profileId}, {}, (err, profileSkillAssociations) => {
+                if (err) {
+                    if (err) {
+                        res.status(500).json({
+                            errors: [{
+                                status: 500,
+                                source: {pointer : 'GET /profiles/:profileId/skills'},
+                                title: "Unable to Find ProfileSkillAssociation",
+                                detail: err
+                            }]
+                        });
+
+                } else if (profileSkillAssociations == null || profileSkillAssociations.length == 0) {
+                    res.status(404).json({
+                        errors: [{
+                            status: 404,
+                            source: {pointer : 'GET /profiles/:profileId/skills'},
+                            title: "No profileSkillAssociation with that Id was found\nprofileId: " + req.params.profileId,
+                            detail: err
+                        }]
+                    });
+                } else {
+                    const skillIds = profileSkillAssociations.map(p => p.skillId);
+                    Skills.find({_id: { $in: skillIds}}, {}, (err, skills) => {
+                        if (err) {
+                            if (err) {
+                                res.status(500).json({
+                                    errors: [{
+                                        status: 500,
+                                        source: {pointer : 'GET /profiles/:profileId/skills'},
+                                        title: "Unable to Find Skills",
+                                        detail: err
+                                    }]
+                                });
+
+                        } else if (skills == null || skills.length == 0) {
+                            res.status(404).json({
+                                errors: [{
+                                    status: 404,
+                                    source: {pointer : 'GET /profiles/:profileId/skills'},
+                                    title: "No skills with that Id was found\nskillId: " + skills,
+                                    detail: err
+                                }]
+                            });
+                        } else {
+                            res.json({
+                                data: profileSkillAssociations.map((p) => {
+                                    return {
+                                        id: p._id,
+                                        type: "ProfileSkillAssociation"
+                                    };
+                                }),
+                                attributes: profileSkillAssociations,
+                                relationships: {
+                                    skills: skills.map((skill) => {
+                                        return {
+                                            id: skill._id,
+                                            type: "Skill"
+                                        };
+                                    })
+                                },
+                                included: skills
+                            });
+                        }
+                    });
+                }
+            });
+        };
     }
 }
 
