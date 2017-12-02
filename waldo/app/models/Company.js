@@ -4,7 +4,6 @@ var schema = new mongodb.Schema({
     description: {type: String},
     name: {type: String},
     logo: {type: String},
-    //Location: {}, might need more clarification for location later.
     city: {type: String},
     state: {type: String},
     _id: {type: String}

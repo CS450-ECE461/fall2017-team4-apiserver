@@ -1,7 +1,4 @@
-'use strict';
-
-const mongodb = require ('@onehilltech/blueprint-mongodb')
-  ;
+const mongodb = require ('@onehilltech/blueprint-mongodb');
 
 var schema = mongodb.Schema({
   headline: {type: String},

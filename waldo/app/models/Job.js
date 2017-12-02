@@ -5,10 +5,9 @@ var schema = new mongodb.Schema({
     company_Logo: {type: String},
     title: {type: String},
     contact_Info: {type: String},
-    //Location: {}, might need more clarification for location later.
     city: {type: String},
     state: {type: String},
-    requirements: {type: String},// ask Nick if this should expect an array.
+    requirements: {type: String},
     _id: {type: String}
 });
 
