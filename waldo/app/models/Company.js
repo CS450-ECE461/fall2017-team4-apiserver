@@ -10,7 +10,7 @@ var schema = new mongodb.Schema({
     _id: {type: String}
 });
 
-const COLLECTION_NAME = 'companys';
+const COLLECTION_NAME = 'companies';
 const MODEL_NAME = 'company';
 
 module.exports = mongodb.resource (MODEL_NAME, schema, COLLECTION_NAME);
