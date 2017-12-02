@@ -7,6 +7,7 @@ let Education = require('../models/Education');
 let Experience = require('../models/Experience');
 let Occupation = require('../models/Occupation');
 let Skill = require('../models/Skill');
+let ProfileSkillAssociation = require('../models/ProfileSkillAssociation');
 
 class UserController {
     constructor() {
@@ -48,7 +49,7 @@ class UserController {
                                             res.status(500).send(err);
                                         }
 
-                                        Skill.find({profileId: profile._id}, {}, (err, skill) => {
+                                        ProfileSkillAssociation.find({profileId: profile._id}, {}, (err, skill) => {
                                             if (err) {
                                                 res.status(500).send(err);
                                             }
