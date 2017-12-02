@@ -57,7 +57,7 @@ class UserController {
                                             let included = [];
                                             included.push({
                                                 type: "Profile",
-                                                id: profileId,
+                                                id: profile._id,
                                                 attributes: profile,
                                                 relationships: {
                                                     skills: {
@@ -108,7 +108,7 @@ class UserController {
                                                     relationships: {
                                                         profile: {
                                                             data: {
-                                                                id: profileId,
+                                                                id: profile._id,
                                                                 type: "Profile"
                                                             }
                                                         }
