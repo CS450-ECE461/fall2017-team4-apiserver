@@ -28,5 +28,13 @@ module.exports = {
     };
 
     return callback (null, client);
-  })
+  }),
+
+  skills: dab.times (20, function(i, opts, callback) {
+    const skillName = 'Skill ' + i;
+    var skill = {name: skillName};
+
+    return callback(null, skill);
+  }),
+
 };
