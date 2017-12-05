@@ -25,7 +25,7 @@ class ChatController {
                     res.status(500).json({
                         errors: [{
                             status: 500,
-                            source: {pointer : 'POST /chats'},
+                            source: { pointer: 'POST /chats' },
                             title: "Unable to Create Conversation",
                             detail: err
                         }]
@@ -46,12 +46,12 @@ class ChatController {
     getMessages() {
         return (req, res) => {
             const conversationId = req.params.conversationId;
-            Message.find({conversationId: conversationId}, {}, (err, messages) => {
+            Message.find({ conversationId: conversationId }, {}, (err, messages) => {
                 if (err) {
                     res.status(500).json({
                         errors: [{
                             status: 500,
-                            source: {pointer : 'GET /chats/:conversationId'},
+                            source: { pointer: 'GET /chats/:conversationId' },
                             title: "Unable to Find messages of Conversation",
                             detail: err
                         }]
@@ -60,7 +60,7 @@ class ChatController {
                     res.status(404).json({
                         errors: [{
                             status: 404,
-                            source: {pointer : 'GET /chats/:conversationId'},
+                            source: { pointer: 'GET /chats/:conversationId' },
                             title: "Unable to Find messages of Conversation",
                             detail: "No messages with that conversationId were found\nconversationId: " + conversationId
                         }]
@@ -70,10 +70,10 @@ class ChatController {
                         data: messages.map(m => {
                             return {
                                 id: m._id,
-                                type: "Message"
+                                type: "Message",
+                                attributes: m
                             };
-                        }),
-                        attributes: messages
+                        })
                     });
                 }
             });
@@ -95,7 +95,7 @@ class ChatController {
                     res.status(500).json({
                         errors: [{
                             status: 500,
-                            source: {pointer : 'POST /chats/:conversationId'},
+                            source: { pointer: 'POST /chats/:conversationId' },
                             title: "Unable to Send Message",
                             detail: err
                         }]
@@ -116,12 +116,12 @@ class ChatController {
     getConversationsByUser() {
         return (req, res) => {
             const userId = req.params.userId;
-            Conversation.find({userId: userId}, {}, (err, conversations) => {
+            Conversation.find({ userId: userId }, {}, (err, conversations) => {
                 if (err) {
                     res.status(500).json({
                         errors: [{
                             status: 500,
-                            source: {pointer : 'GET /users/:userId/chats'},
+                            source: { pointer: 'GET /users/:userId/chats' },
                             title: "Unable to Find Conversations from User",
                             detail: err
                         }]
@@ -130,7 +130,7 @@ class ChatController {
                     res.status(404).json({
                         errors: [{
                             status: 404,
-                            source: {pointer : 'GET /users/:userId/chats'},
+                            source: { pointer: 'GET /users/:userId/chats' },
                             title: "Unable to Find Conversations from User",
                             detail: "No Conversations with that userId were found\nuserId: " + userId
                         }]
@@ -140,10 +140,10 @@ class ChatController {
                         data: conversations.map(conversation => {
                             return {
                                 id: conversation._id,
-                                type: "Conversation"
+                                type: "Conversation",
+                                attributes: conversation
                             };
-                        }),
-                        attributes: conversations
+                        })
                     });
                 }
             });
