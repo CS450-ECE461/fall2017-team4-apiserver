@@ -1,5 +1,5 @@
 let blueprint = require('@onehilltech/blueprint');
-let mongodb = require('@onehilltech/blueprint-mongodb')
+let mongodb = require('@onehilltech/blueprint-mongodb');
 let util = require('util');
 let User = require('../models/User');
 let Profile = require('../models/Profile');
@@ -7,6 +7,7 @@ let Education = require('../models/Education');
 let Experience = require('../models/Experience');
 let Occupation = require('../models/Occupation');
 let Skill = require('../models/Skill');
+let ProfileSkillAssociation = require('../models/ProfileSkillAssociation');
 
 class UserController {
     constructor() {
@@ -48,32 +49,72 @@ class UserController {
                                             res.status(500).send(err);
                                         }
 
-                                        Skill.find({profileId: profile._id}, {}, (err, skill) => {
+                                        ProfileSkillAssociation.find({profileId: profile._id}, {}, (err, skill) => {
                                             if (err) {
                                                 res.status(500).send(err);
                                             }
 
+                                            let included = [];
+                                            included.push({
+                                                type: "Profile",
+                                                id: profile._id,
+                                                attributes: profile,
+                                                relationships: {
+                                                    skills: {
+                                                        data: skill.map(s => {
+                                                            return {
+                                                                type: "Skill",
+                                                                id: s._id
+                                                            };
+                                                        })
+                                                    },
+                                                    occupations: {
+                                                        data: occupation.map(o => {
+                                                            return {
+                                                                type: "Occupation",
+                                                                id: o._id
+                                                            };
+                                                        })
+                                                    },
+                                                    education: {
+                                                        data: education.map(e => {
+                                                            return {
+                                                                type: "Education",
+                                                                id: e._id
+                                                            };
+                                                        })
+                                                    },
+                                                    experience: {
+                                                        data: expirience.map(e => {
+                                                            return {
+                                                                type: "Expirience",
+                                                                id: e._id
+                                                            };
+                                                        })
+                                                    }                      
+                                                }
+                                            });
+
+                                            included.concat(skill);
+                                            included.concat(occupation);
+                                            included.concat(education);
+                                            included.concat(expirience);
+
                                             res.json({
                                                 data: {
                                                     id: user._id,
-                                                    type: 'User',
-                                                    attributes: user
-                                                },
-                                                relationships: {
-                                                    profile: {
-                                                        data: {
-                                                            id: profile._id,
-                                                            type: 'Profile',
-                                                            attributes: profile
-                                                        },
-                                                        relationships: {
-                                                            skills: skill,
-                                                            education: education,
-                                                            occupation: occupation,
-                                                            expirience: expirience
+                                                    type: "User",
+                                                    attributes: user,
+                                                    relationships: {
+                                                        profile: {
+                                                            data: {
+                                                                id: profile._id,
+                                                                type: "Profile"
+                                                            }
                                                         }
                                                     }
-                                                }
+                                                },
+                                                included: included
                                             });
                                         });
                                     });
@@ -122,18 +163,41 @@ class UserController {
                         if (err) {
                             res.status(500).send(err);
                         }
+                        let included = [];
+                        included.push({
+                            type: "Profile",
+                            id: profileId,
+                            attributes: profile,
+                            relationships: {
+                                skills: {
+                                    data: []
+                                },
+                                occupations: {
+                                    data: []
+                                },
+                                education: {
+                                    data: []
+                                },
+                                experience: {
+                                    data: []
+                                }                      
+                            }
+                        });
                         res.json({
                             data: {
                                 id: user._id,
-                                type: String
-                            },
-                            relationships: {
-                                profile: {
-                                    attributes: profile,
-                                    id: profileId,
-                                    type: "Profile"
+                                type: "User",
+                                attributes: user,
+                                relationships: {
+                                    profile: {
+                                        data: {
+                                            id: profileId,
+                                            type: "Profile"
+                                        }
+                                    }
                                 }
-                            }
+                            },
+                            included: included
                         });
                     });
 
@@ -142,7 +206,7 @@ class UserController {
                 res.status(400).send("Bad request, body needs to include body.data.attributes\nYou sent: " + JSON.stringify(req.body));
             }
         };
-    };
+    }
 }
 
 blueprint.controller(UserController);

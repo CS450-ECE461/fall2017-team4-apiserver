@@ -24,8 +24,8 @@ class OccupationController {
                         data: {
                             id: Occupation._id,
                             type: 'Occupation',
-                            attributes: Occupation
-                        }
+                        },
+                        attributes: occupation
                     });
                 }
             });
@@ -44,8 +44,8 @@ class OccupationController {
                         data: {
                             id: occupation._id,
                             type: 'Occupation',
-                            attributes: Occupation
-                        }
+                        },
+                        attributes: occupation
                     });
                 }
             });
@@ -63,6 +63,7 @@ class OccupationController {
                             id: 1,
                             type: 'Message',
                             attributes: {
+                                id: 1,
                                 message: "Occupation Document was deleted. {_id: " + req.params.OccupationId + "}"
                             }
                         }
@@ -89,8 +90,10 @@ class OccupationController {
                             res.status(500).send(err);
                         } else {
                             res.json({
-                                id: callbackOccupation._id,
-                                type: 'Occupation',
+                                data: {
+                                    id: callbackOccupation._id,
+                                    type: 'Occupation',
+                                },
                                 attributes: callbackOccupation
                             });
                         }
@@ -111,9 +114,9 @@ class OccupationController {
                             return {
                                 id: i._id,
                                 type: 'Occupation',
-                                attributes: i
                             };
-                        })
+                        }),
+                        attributes: occupation
                     });
                 }
             });

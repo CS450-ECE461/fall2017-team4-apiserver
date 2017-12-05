@@ -30,8 +30,8 @@ class ExperienceController {
                         data: {
                             id: experience._id,
                             type: 'Experience',
-                            attributes: experience
-                        }
+                        },
+                        attributes: experience
                     });
                 }
             });
@@ -50,8 +50,8 @@ class ExperienceController {
                         data: {
                             id: experiece._id,
                             type: 'Experience',
-                            attributes: experience
-                        }
+                        },
+                        attributes: experience
                     });
                 }
             });
@@ -69,6 +69,7 @@ class ExperienceController {
                             id: 1,
                             type: 'Message',
                             attributes: {
+                                id: 1,
                                 message: "Experience Document was deleted. {_id: " + req.params.experienceId + "}"
                             }
                         }
@@ -102,8 +103,10 @@ class ExperienceController {
                             res.status(500).send(err);
                         } else {
                             res.json({
-                                id: callbackExperience._id,
-                                type: 'Experience',
+                                data: {
+                                    id: callbackExperience._id,
+                                    type: 'Experience',
+                                },
                                 attributes: callbackExperience
                             });
                         }
@@ -123,10 +126,10 @@ class ExperienceController {
                         data : experience.map((i) => {
                             return {
                                 id: i._id,
-                                type: 'Experience',
-                                attributes: i
+                                type: 'Experience'
                             };
-                        })
+                        }),
+                        attributes: experience
                     });
                 }
             });

@@ -7,7 +7,7 @@ module.exports = exports ={
         put: {action : 'ExperienceController@update'},
         delete: {action : 'ExperienceController@delete'}
     },
-    '/profiles/experiences/:profileId' : {
+    '/profiles/:profileId/experiences' : {
         get: {action: 'ExperienceController@getByProfile'}
     }
-}
+};

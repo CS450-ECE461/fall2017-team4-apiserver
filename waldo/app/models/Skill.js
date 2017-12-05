@@ -5,7 +5,7 @@ const mongodb = require ('@onehilltech/blueprint-mongodb')
 
 var schema = new mongodb.Schema({
   name: {type: String},
-  id: {type: String}
+  _id: {type: String}
 });
 
 const COLLECTION_NAME = 'skills';
