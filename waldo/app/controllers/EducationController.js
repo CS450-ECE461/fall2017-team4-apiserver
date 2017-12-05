@@ -52,7 +52,7 @@ class EducationController {
      */
     getOne() {
         return (req, res) => {
-            Education.findOne({_id: req.params.educationId}, {}, (err, education) => {
+            Education.findOne({ _id: req.params.educationId }, {}, (err, education) => {
                 if (err) {
                     res.status(500).send(err);
                 } else if (education == null) {
@@ -75,7 +75,7 @@ class EducationController {
      */
     delete() {
         return (req, res) => {
-            Education.remove({_id: req.params.educationId}, (err) => {
+            Education.remove({ _id: req.params.educationId }, (err) => {
                 if (err) {
                     res.status(500).send(err);
                 } else {
@@ -101,7 +101,7 @@ class EducationController {
     update() {
         return (req, res) => {
             const requestEducation = req.body.data.attributes;
-            Education.findOne({_id: req.params.educationId}, {}, (err, education) => {
+            Education.findOne({ _id: req.params.educationId }, {}, (err, education) => {
                 if (err) {
                     res.status(500).send(err);
                 } else if (education == null) {
@@ -117,7 +117,7 @@ class EducationController {
                         endDate: requestEducation.endDate || education.endDate,
                         about: requestEducation.about || education.about
                     };
-                    Education.findOneAndUpdate({_id: education._id}, updatedEducation, {}, (err, callbackEducation) => {
+                    Education.findOneAndUpdate({ _id: education._id }, updatedEducation, {}, (err, callbackEducation) => {
                         if (err) {
                             res.status(500).send(err);
                         } else {
@@ -126,7 +126,7 @@ class EducationController {
                                     id: callbackEducation._id,
                                     type: 'Education'
                                 },
-                                attributes: callbackEducation 
+                                attributes: callbackEducation
                             });
                         }
                     });
@@ -140,18 +140,18 @@ class EducationController {
      */
     getByProfile() {
         return (req, res) => {
-            Education.find({profileId: req.params.profileId}, {}, (err, education) => {
+            Education.find({ profileId: req.params.profileId }, {}, (err, education) => {
                 if (err) {
                     res.status(500).send(err);
                 } else {
                     res.json({
-                        data : education.map((i) => {
+                        data: education.map((i) => {
                             return {
                                 id: i._id,
-                                type: 'Education'
+                                type: 'Education',
+                                attributes: i
                             };
-                        }),
-                        attributes: education                        
+                        })
                     });
                 }
             });

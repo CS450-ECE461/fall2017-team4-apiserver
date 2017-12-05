@@ -137,7 +137,7 @@ class ChatController {
                     });
                 } else {
                     res.json({
-                        data: conversations.map(conversation => {
+                        data: conversations.map((conversation) => {
                             return {
                                 id: conversation._id,
                                 type: "Conversation",
