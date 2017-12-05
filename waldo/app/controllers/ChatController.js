@@ -26,7 +26,7 @@ class ChatController {
                         errors: [{
                             status: 500,
                             source: { pointer: 'POST /chats' },
-                            title: "Unable to Create Conversation",
+                            title: "Unable to Create Chat",
                             detail: err
                         }]
                     });
@@ -34,9 +34,9 @@ class ChatController {
                     res.json({
                         data: {
                             id: conversation._id,
-                            type: "Coversation"
+                            type: "Chat",
+                            attributes: conversation
                         },
-                        attributes: conversation
                     });
                 }
             });
@@ -83,7 +83,7 @@ class ChatController {
     sendMessage() {
         return (req, res) => {
             const conversationId = req.params.conversationId;
-            const newMessage = req.body.attributes;
+            const newMessage = req.body.data.attributes;
             Message.create({
                 conversationId: conversationId,
                 body: newMessage.body,
@@ -104,9 +104,9 @@ class ChatController {
                     res.json({
                         data: {
                             id: message._id,
-                            type: "Message"
+                            type: "Message",
+                            attributes: message
                         },
-                        attributes: message
                     });
                 }
             });
@@ -148,6 +148,47 @@ class ChatController {
                 }
             });
         };
+    }
+
+    getLastMessage() {
+        return (req, res) => {
+            Message.find({ conversationId: req.params.conversationId }, {}, {
+                    skip: 0, // Starting Row
+                    limit: 1, // Ending Row
+                    sort: {
+                        timestamp: -1
+                    }
+                },
+                (err, message) => {
+                    if (err) {
+                        res.status(500).json({
+                            errors: [{
+                                status: 500,
+                                source: { pointer: 'GET /chats/:conversationId/latest' },
+                                title: "Unable to latest messages of Conversation",
+                                detail: err
+                            }]
+                        });
+                    } else if (message == null || message.length == 0 || message[0] == null) {
+                        res.status(404).json({
+                            errors: [{
+                                status: 404,
+                                source: { pointer: 'GET /chats/:conversationId/latest' },
+                                title: "Unable to Find messages of Conversation",
+                                detail: "No messages with that conversationId were found\nconversationId: " + conversationId
+                            }]
+                        });
+                    } else {
+                        res.json({
+                            data: {
+                                id: message._id,
+                                type: "Message",
+                                attributes: message[0]
+                            }
+                        })
+                    }
+                });
+        }
     }
 }
 
