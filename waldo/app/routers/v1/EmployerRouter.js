@@ -1,12 +1,12 @@
 module.exports = exports = {
     '/companies' : {
         //post : { action : 'UserController@create' },
-        get : { action : 'EmployerController@getCompanies' }
+        get : { action : 'EmployerController@getAllCompanies' }
     },
     '/companies/:companyId' : {
-        get : { action : 'EmployerController@getCompanyId' }
+        get : { action : 'EmployerController@getCompanyById' }
     },
     '/jobs/:jobId/employees' : {
-        get : { action : 'EmployerController@getEmployees' }
+        get : { action : 'EmployerController@getEmployeesByJob' }
     }
 }
