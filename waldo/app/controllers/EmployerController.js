@@ -79,52 +79,45 @@ class EmployerController {
                     });
                 } else {
                     Job.find({ companyId: company._id }, {}, (err, jobs) => {
-                            if (err) {
-                                res.status(500).json({
-                                    errors: [{
-                                        status: 500,
-                                        source: { pointer: 'GET /companies/:companyId' },
-                                        title: "Unable to get Jobs",
-                                        detail: err
-                                    }]
-                                });
-                            } else if (jobs == null || jobs.length == 0) {
-                                res.status(404).json({
-                                    errors: [{
-                                        status: 404,
-                                        source: { pointer: 'GET /companies/:companyId' },
-                                        title: "Unable to Find any Jobs with that companyId\ncompanyId: " + req.params.companyId,
-                                        detail: "No Jobs found with that companyId"
-                                    }]
-                                });
-                            } else {
-                                res.json({
-                                    data: {
-                                        id: company._id,
-                                        type: "Company",
-                                        attributes: company,
-                                        relationships: {
-                                            jobs: jobs.map((job) => {
-                                                return {
-                                                    data: {
-                                                        id: job._id,
-                                                        type: "Job"
-                                                    }
-                                                };
-                                            })
-                                        }
-                                    },
-                                    included: jobs
-                                });
-                            }
-                        })
-                        // res.json({
-                        //     data: {
-                        //         id: company._id,
-                        //         type: "Company",
-                        //         attributes: company
-                        //     }
-                        // });
+                        if (err) {
+                            res.status(500).json({
+                                errors: [{
+                                    status: 500,
+                                    source: { pointer: 'GET /companies/:companyId' },
+                                    title: "Unable to get Jobs",
+                                    detail: err
+                                }]
+                            });
+                        } else if (jobs == null || jobs.length == 0) {
+                            res.status(404).json({
+                                errors: [{
+                                    status: 404,
+                                    source: { pointer: 'GET /companies/:companyId' },
+                                    title: "Unable to Find any Jobs with that companyId\ncompanyId: " + req.params.companyId,
+                                    detail: "No Jobs found with that companyId"
+                                }]
+                            });
+                        } else {
+                            res.json({
+                                data: {
+                                    id: company._id,
+                                    type: "Company",
+                                    attributes: company,
+                                    relationships: {
+                                        jobs: jobs.map((job) => {
+                                            return {
+                                                data: {
+                                                    id: job._id,
+                                                    type: "Job"
+                                                }
+                                            };
+                                        })
+                                    }
+                                },
+                                included: jobs
+                            });
+                        }
+                    });
                 }
             });
         };
@@ -158,7 +151,7 @@ class EmployerController {
                     let employIds = employeeJobAssociations.map((employeeJobAssociation) => {
                         return employeeJobAssociation.employeeId;
                     });
-                    Employee.find({ _id: { $in: employIds } }, {}, (err, employees) {
+                    Employee.find({ _id: { $in: employIds } }, {}, (err, employees) => {
                         if (err) {
                             res.status(500).json({
                                 errors: [{
