@@ -14,14 +14,14 @@ class SkillController {
     add() {
         return (req, res) => {
             Skill.create({
-               name: req.body.attributes.name,
-               _id: new ObjectId() 
+                name: req.body.attributes.name,
+                _id: new ObjectId()
             }, (err, skill) => {
                 if (err) {
                     res.status(500).json({
                         errors: [{
                             status: 500,
-                            source: {pointer : 'POST /skills'},
+                            source: { pointer: 'POST /skills' },
                             title: "Unable to Create Skill",
                             detail: err
                         }]
@@ -46,7 +46,7 @@ class SkillController {
                     res.status(500).json({
                         errors: [{
                             status: 500,
-                            source: {pointer : 'GET /skills'},
+                            source: { pointer: 'GET /skills' },
                             title: "Unable to Get Skills",
                             detail: err
                         }]
@@ -55,7 +55,7 @@ class SkillController {
                     res.status(404).json({
                         errors: [{
                             status: 404,
-                            source: {pointer : 'GET /skills'},
+                            source: { pointer: 'GET /skills' },
                             title: "Unable to Find any Skills",
                             detail: "No skills were found"
                         }]
@@ -86,18 +86,18 @@ class SkillController {
                     res.status(500).json({
                         errors: [{
                             status: 500,
-                            source: {pointer : 'POST /profiles/:profileId/skills/:skillId'},
+                            source: { pointer: 'POST /profiles/:profileId/skills/:skillId' },
                             title: "Unable to Create Skill Profile Association",
                             detail: err
                         }]
                     });
                 } else {
-                    Skill.find({_id: profileSkillAssociation.skillId}, {}, (err, skill) => {
+                    Skill.find({ _id: profileSkillAssociation.skillId }, {}, (err, skill) => {
                         if (err) {
                             res.status(500).json({
                                 errors: [{
                                     status: 500,
-                                    source: {pointer : 'POST /profiles/:profileId/skills/:skillId'},
+                                    source: { pointer: 'POST /profiles/:profileId/skills/:skillId' },
                                     title: "Unable to Find Skill",
                                     detail: err
                                 }]
@@ -106,7 +106,7 @@ class SkillController {
                             res.status(404).json({
                                 errors: [{
                                     status: 404,
-                                    source: {pointer : 'POST /profiles/:profileId/skills/:skillId'},
+                                    source: { pointer: 'POST /profiles/:profileId/skills/:skillId' },
                                     title: "No skill with that Id was found\nskillId: " + profileSkillAssociation.skillId,
                                     detail: err
                                 }]
@@ -145,13 +145,13 @@ class SkillController {
             }, (err) => {
                 if (err) {
                     res.status(500).json({
-                            errors: [{
-                                status: 500,
-                                source: {pointer : 'DELETE /profiles/:profileId/skills/:skillId'},
-                                title: "Unable to Remove ProfileSkillAssociation\nprofileId " + req.params.profileId + "\tskillId: " + req.params.skillId,
-                                detail: err
-                            }]
-                        });
+                        errors: [{
+                            status: 500,
+                            source: { pointer: 'DELETE /profiles/:profileId/skills/:skillId' },
+                            title: "Unable to Remove ProfileSkillAssociation\nprofileId " + req.params.profileId + "\tskillId: " + req.params.skillId,
+                            detail: err
+                        }]
+                    });
                 } else {
                     res.json({
                         data: {
@@ -163,19 +163,19 @@ class SkillController {
                             message: "ProfileSkillAssociation Document was deleted. {profileId: " + req.params.profileId + ",skillId: " + req.params.skillId + "}"
                         }
                     });
-                } 
+                }
             });
         };
     }
 
     getByProfile() {
         return (req, res) => {
-            ProfileSkillAssociation.find({profileId:req.params.profileId}, {}, (err, profileSkillAssociations) => {
+            ProfileSkillAssociation.find({ profileId: req.params.profileId }, {}, (err, profileSkillAssociations) => {
                 if (err) {
                     res.status(500).json({
                         errors: [{
                             status: 500,
-                            source: {pointer : 'GET /profiles/:profileId/skills'},
+                            source: { pointer: 'GET /profiles/:profileId/skills' },
                             title: "Unable to Find ProfileSkillAssociation",
                             detail: err
                         }]
@@ -184,19 +184,19 @@ class SkillController {
                     res.status(404).json({
                         errors: [{
                             status: 404,
-                            source: {pointer : 'GET /profiles/:profileId/skills'},
+                            source: { pointer: 'GET /profiles/:profileId/skills' },
                             title: "No profileSkillAssociation with that Id was found\nprofileId: " + req.params.profileId,
                             detail: err
                         }]
                     });
                 } else {
                     const skillIds = profileSkillAssociations.map(p => p.skillId);
-                    Skills.find({_id: { $in: skillIds}}, {}, (err, skills) => {
+                    Skills.find({ _id: { $in: skillIds } }, {}, (err, skills) => {
                         if (err) {
                             res.status(500).json({
                                 errors: [{
                                     status: 500,
-                                    source: {pointer : 'GET /profiles/:profileId/skills'},
+                                    source: { pointer: 'GET /profiles/:profileId/skills' },
                                     title: "Unable to Find Skills",
                                     detail: err
                                 }]
@@ -205,28 +205,28 @@ class SkillController {
                             res.status(404).json({
                                 errors: [{
                                     status: 404,
-                                    source: {pointer : 'GET /profiles/:profileId/skills'},
+                                    source: { pointer: 'GET /profiles/:profileId/skills' },
                                     title: "No skills with that Id was found\nskillId: " + skills,
                                     detail: err
                                 }]
                             });
                         } else {
                             res.json({
-                                data: profileSkillAssociations.map((p) => {
+                                data: profileSkillAssociations.map((profileSkillAssociation) => {
                                     return {
-                                        id: p._id,
-                                        type: "ProfileSkillAssociation"
+                                        id: profileSkillAssociation._id,
+                                        type: "ProfileSkillAssociation",
+                                        attributes: profileSkillAssociation,
+                                        relationships: {
+                                            skills: {
+                                                data: {
+                                                    id: profileSkillAssociation.skillId,
+                                                    type: "Skill"
+                                                }
+                                            }
+                                        }
                                     };
                                 }),
-                                attributes: profileSkillAssociations,
-                                relationships: {
-                                    skills: skills.map((skill) => {
-                                        return {
-                                            id: skill._id,
-                                            type: "Skill"
-                                        };
-                                    })
-                                },
                                 included: skills
                             });
                         }
