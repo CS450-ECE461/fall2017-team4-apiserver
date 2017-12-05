@@ -140,7 +140,7 @@ class ChatController {
                         data: conversations.map((conversation) => {
                             return {
                                 id: conversation._id,
-                                type: "Conversation",
+                                type: "Chat",
                                 attributes: conversation
                             };
                         })
@@ -185,7 +185,7 @@ class ChatController {
                                 type: "Message",
                                 attributes: message[0]
                             }
-                        })
+                        });
                     }
                 });
         }
