@@ -40,7 +40,7 @@ class ExperienceController {
 
     getOne() {
         return (req, res) => {
-            Experience.findOne({_id: req.params.experienceId}, {}, (err, experiece) => {
+            Experience.findOne({ _id: req.params.experienceId }, {}, (err, experiece) => {
                 if (err) {
                     res.status(500).send(err);
                 } else if (experiece == null) {
@@ -60,7 +60,7 @@ class ExperienceController {
 
     delete() {
         return (req, res) => {
-            Experience.remove({_id: req.parans.experienceId}, (err) => {
+            Experience.remove({ _id: req.parans.experienceId }, (err) => {
                 if (err) {
                     res.status(500).send(err);
                 } else {
@@ -82,7 +82,7 @@ class ExperienceController {
     update() {
         return (req, res) => {
             const requestExperience = req.body.data.attributes;
-            Experience.findOne({_id: req.params.experienceId}, {}, (err, experiece) => {
+            Experience.findOne({ _id: req.params.experienceId }, {}, (err, experiece) => {
                 if (err) {
                     res.status(500).send(err);
                 } else if (experiece == null) {
@@ -98,7 +98,7 @@ class ExperienceController {
                         endDate: requestExperience.endDate || experiece.endDate,
                         about: requestExperience.about || experiece.about
                     };
-                    Experience.findOneAndUpdate({_id: experiece._id}, updatedExperience, {}, (err, callbackExperience) => {
+                    Experience.findOneAndUpdate({ _id: experiece._id }, updatedExperience, {}, (err, callbackExperience) => {
                         if (err) {
                             res.status(500).send(err);
                         } else {
@@ -118,18 +118,18 @@ class ExperienceController {
 
     getByProfile() {
         return (req, res) => {
-            Experience.find({profileId: req.params.profileId}, {}, (err, experience) => {
+            Experience.find({ profileId: req.params.profileId }, {}, (err, experience) => {
                 if (err) {
                     res.status(500).send(err);
                 } else {
                     res.json({
-                        data : experience.map((i) => {
+                        data: experience.map((i) => {
                             return {
                                 id: i._id,
-                                type: 'Experience'
+                                type: 'Experience',
+                                attributes: i
                             };
-                        }),
-                        attributes: experience
+                        })
                     });
                 }
             });
