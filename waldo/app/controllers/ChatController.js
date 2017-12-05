@@ -34,7 +34,7 @@ class ChatController {
                     res.json({
                         data: {
                             id: conversation._id,
-                            type: "Coversation"
+                            type: "chat"
                         },
                         attributes: conversation
                     });
