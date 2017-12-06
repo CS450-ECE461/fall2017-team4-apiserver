@@ -174,7 +174,7 @@ class EmployerController {
                             res.json({
                                 data: employees.map((employee) => {
                                     return {
-                                        id: employee.Id,
+                                        id: employee._id,
                                         type: "Employee",
                                         attributes: employee
                                     };
