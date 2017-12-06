@@ -58,7 +58,7 @@ class EmployerController {
      */
     getCompanyById() {
         return (req, res) => {
-            Company.findOne({ _id: req.params._id }, {}, (err, company) => {
+            Company.findById(req.params.companyId, {}, (err, company) => {
                 if (err) {
                     res.status(500).json({
                         errors: [{
