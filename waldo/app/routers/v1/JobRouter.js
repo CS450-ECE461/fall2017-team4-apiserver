@@ -10,7 +10,7 @@ module.exports = exports = {
     '/jobs/:jobId': {
         get: { action: 'JobController@getJobById' }
     },
-    '/jobs/locations': {
-        get: { action: 'JobController@getJobsByLocation' }
+    '/jobs': {
+        get: { action: 'JobController@getJobs' }
     }
-}
+};

@@ -12,7 +12,7 @@ const Job = require('../models/Job');
 const JobSkillAssociation = require('../models/JobSkillAssociation');
 const SavedJob = require('../models/SavedJob');
 
-const User = require('../models');
+const User = require('../models/User');
 const Profile = require('../models/Profile');
 const ProfileSkillAssociation = require('../models/ProfileSkillAssociation');
 
@@ -182,10 +182,10 @@ class JobController {
                                                 });
                                             });
                                             let finalJobs = [];
-                                            got.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + userLocation + "&key=" + "").then((userResponse) => {
-                                                userLongLat = userResponse.results[0].geometry.location;
+                                            got.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + userLocation + "&key=" + process.env.GOOGLE_KEY).then((userResponse) => {
+                                                let userLongLat = userResponse.results[0].geometry.location;
                                                 async.each(filteredJobs, (filtered) => {
-                                                    got.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + filtered.location + "&key=" + "").then((response) => {
+                                                    got.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + filtered.location + "&key=" + process.env.GOOGLE_KEY).then((response) => {
                                                         let jobLongLat = response.results[0].geometry.location;
                                                         let distance = Math.sqrt(Math.pow((userLongLat.lng - jobLongLat.lng), 2) + Math.pow((userLongLat.lat - jobLongLat.lat), 2));
                                                         if (distance < radius) {
@@ -291,13 +291,255 @@ class JobController {
 
     getJobById() {
         return (req, res) => {
+            Job.findById(req.params.jobId, {}, (err, job) => {
+                if (err) {
+                    res.status(500).json({
+                        errors: [{
+                            status: 500,
+                            source: { pointer: 'GET /jobs/:jobId' },
+                            title: "Unable to get Job",
+                            detail: err
+                        }]
+                    });
+
+                } else if (job == null) {
+                    res.status(404).json({
+                        errors: [{
+                            status: 404,
+                            source: { pointer: 'GET /jobs/:jobId' },
+                            title: "Unable to Find any Job with that jobId\njobId: " + req.params.jobId,
+                            detail: "No Jobs found with that jobId"
+                        }]
+                    });
+
+                } else {
+                    JobSkillAssociation.find({ jobId: job._id }, {}, (err, jobSkillAssociations) => {
+                        if (err) {
+                            res.status(500).json({
+                                errors: [{
+                                    status: 500,
+                                    source: { pointer: 'GET /jobs/:jobId' },
+                                    title: "Unable to get JobSkillAssoc",
+                                    detail: err
+                                }]
+                            });
+
+                        } else if (jobSkillAssociations == null) {
+                            res.status(404).json({
+                                errors: [{
+                                    status: 404,
+                                    source: { pointer: 'GET /jobs/:jobId' },
+                                    title: "Unable to Find any JobSkillAssocs with that jobId\njobId: " + req.params.jobId,
+                                    detail: "No Jobs found with that jobId"
+                                }]
+                            });
+
+                        } else {
+                            let skillIds = jobSkillAssociations.map((jobSkillAssociation) => {
+                                return jobSkillAssociation.skillId;
+                            });
+                            Skill.find({ _id: { $in: skillIds } }, {}, (err, skills) => {
+                                if (err) {
+                                    res.status(500).json({
+                                        errors: [{
+                                            status: 500,
+                                            source: { pointer: 'GET /jobs/:jobId' },
+                                            title: "Unable to get Skills",
+                                            detail: err
+                                        }]
+                                    });
+
+                                } else if (skills == null) {
+                                    res.status(404).json({
+                                        errors: [{
+                                            status: 404,
+                                            source: { pointer: 'GET /jobs/:jobId' },
+                                            title: "Unable to Find any Skills with that jobId\njobId: " + req.params.jobId,
+                                            detail: "No Skills found with that jobId"
+                                        }]
+                                    });
+
+                                } else {
+                                    Occupation.findById(job.occupationId, {}, (err, occupation) => {
+                                        if (err) {
+                                            res.status(500).json({
+                                                errors: [{
+                                                    status: 500,
+                                                    source: { pointer: 'GET /jobs/:jobId' },
+                                                    title: "Unable to get Occupation",
+                                                    detail: err
+                                                }]
+                                            });
+
+                                        } else if (occupation == null) {
+                                            res.status(404).json({
+                                                errors: [{
+                                                    status: 404,
+                                                    source: { pointer: 'GET /jobs/:jobId' },
+                                                    title: "Unable to Find any Occupation with that jobId\njobId: " + req.params.jobId,
+                                                    detail: "No Occupation found with that jobId"
+                                                }]
+                                            });
+
+                                        } else {
+                                            EmployeeJobAssociation.find({ jobId: job._id }, {}, (err, employeeJobAssociations) => {
+                                                if (err) {
+                                                    res.status(500).json({
+                                                        errors: [{
+                                                            status: 500,
+                                                            source: { pointer: 'GET /jobs/:jobId' },
+                                                            title: "Unable to get EmployJobAssoc",
+                                                            detail: err
+                                                        }]
+                                                    });
+
+                                                } else if (employeeJobAssociations == null) {
+                                                    res.status(404).json({
+                                                        errors: [{
+                                                            status: 404,
+                                                            source: { pointer: 'GET /jobs/:jobId' },
+                                                            title: "Unable to Find any EmployeeJobAssocs with that jobId\njobId: " + req.params.jobId,
+                                                            detail: "No EmployeeJobAssocs found with that jobId"
+                                                        }]
+                                                    });
+
+                                                } else {
+                                                    let employeeIds = employeeJobAssociations.map((employeeJobAssociation) => {
+                                                        return employeeJobAssociation.employeeId;
+                                                    });
+                                                    Employee.find({ _id: { $in: employeeIds } }, {}, (err, employees) => {
+                                                        if (err) {
+                                                            res.status(500).json({
+                                                                errors: [{
+                                                                    status: 500,
+                                                                    source: { pointer: 'GET /jobs/:jobId' },
+                                                                    title: "Unable to get Jobs",
+                                                                    detail: err
+                                                                }]
+                                                            });
+
+                                                        } else if (employees == null) {
+                                                            res.status(404).json({
+                                                                errors: [{
+                                                                    status: 404,
+                                                                    source: { pointer: 'GET /jobs/:jobId' },
+                                                                    title: "Unable to Find any Employees with that jobId\njobId: " + req.params.jobId,
+                                                                    detail: "No Employees found with that jobId"
+                                                                }]
+                                                            });
+
+                                                        } else {
+                                                            Company.findById(job.companyId, {}, (err, company) => {
+                                                                if (err) {
+                                                                    res.status(500).json({
+                                                                        errors: [{
+                                                                            status: 500,
+                                                                            source: { pointer: 'GET /jobs/:jobId' },
+                                                                            title: "Unable to get Jobs",
+                                                                            detail: err
+                                                                        }]
+                                                                    });
+
+                                                                } else if (company == null) {
+                                                                    res.status(404).json({
+                                                                        errors: [{
+                                                                            status: 404,
+                                                                            source: { pointer: 'GET /jobs/:jobId' },
+                                                                            title: "Unable to Find any Company with that jobId\njobId: " + req.params.jobId,
+                                                                            detail: "No Company found with that jobId"
+                                                                        }]
+                                                                    });
+
+                                                                } else {
+                                                                    res.json({
+                                                                        data: {
+                                                                            id: job._id,
+                                                                            type: "Job",
+                                                                            attributes: job,
+                                                                            relationships: {
+                                                                                company: {
+                                                                                    data: {
+                                                                                        id: company._id,
+                                                                                        type: "Company"
+                                                                                    }
+                                                                                },
+                                                                                employees: employees.map((employee) => {
+                                                                                    return {
+                                                                                        id: employee._id,
+                                                                                        type: "Employee"
+                                                                                    };
+                                                                                }),
+                                                                                occupation: {
+                                                                                    data: {
+                                                                                        id: occupation._id,
+                                                                                        type: "Occupation"
+                                                                                    }
+                                                                                },
+                                                                                skills: skills.map((skill) => {
+                                                                                    return {
+                                                                                        data: {
+                                                                                            id: skill._id,
+                                                                                            type: "Skill"
+                                                                                        }
+                                                                                    };
+                                                                                })
+                                                                            }
+                                                                        }, //end data
+                                                                        included: skills.concat(employees).concat(skills).concat(occupation).concat(company)
+                                                                    });
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
 
         };
     }
 
-    getJobsByLocation() {
+    getJobs() {
         return (req, res) => {
+            Job.find({}, {}, (err, jobs) => {
+                if (err) {
+                    res.status(500).json({
+                        errors: [{
+                            status: 500,
+                            source: { pointer: 'GET /jobs' },
+                            title: "Unable to get Jobs",
+                            detail: err
+                        }]
+                    });
 
+                } else if (jobs == null) {
+                    res.status(404).json({
+                        errors: [{
+                            status: 404,
+                            source: { pointer: 'GET /jobs' },
+                            title: "Unable to Find any Jobs",
+                            detail: "No Jobs found"
+                        }]
+                    });
+
+                } else {
+                    res.json({
+                        data: jobs.map((job) => {
+                            return {
+                                id: job._id,
+                                type: "Job",
+                                attributes: job
+                            };
+                        })
+                    });
+                }
+            });
         };
     }
 }
