@@ -1,14 +1,12 @@
 const mongodb = require('@onehilltech/blueprint-mongodb');
 
 var schema = new mongodb.Schema({
-    description: { type: String },
-    name: { type: String },
-    logo: { type: String },
-    location: { type: String },
+    userId: { type: String },
+    jobId: { type: String },
     _id: { type: String }
 });
 
-const COLLECTION_NAME = 'companies';
-const MODEL_NAME = 'company';
+const COLLECTION_NAME = 'savedJob';
+const MODEL_NAME = 'savedJobs';
 
 module.exports = mongodb.resource(MODEL_NAME, schema, COLLECTION_NAME);

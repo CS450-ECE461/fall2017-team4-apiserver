@@ -5,10 +5,11 @@ var schema = new mongodb.Schema({
     name: { type: String },
     phoneNumber: { type: String },
     title: { type: String },
+    image: { type: String },
     _id: { type: String }
 });
 
-const COLLECTION_NAME = 'Employees';
-const MODEL_NAME = 'Employee';
+const COLLECTION_NAME = 'employees';
+const MODEL_NAME = 'employee';
 
 module.exports = mongodb.resource(MODEL_NAME, schema, COLLECTION_NAME);
