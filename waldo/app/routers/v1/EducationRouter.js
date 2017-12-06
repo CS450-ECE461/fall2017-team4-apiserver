@@ -1,14 +1,14 @@
 module.exports = exports = {
-    '/education/:profileId' : {
+    '/educations/:profileId' : {
         post: {action : 'EducationController@add'}
 
     },
-    '/education/:educationId' : {
+    '/educations/:educationId' : {
         get: {action : 'EducationController@getOne'},
         put: {action : 'EducationController@update'},
         delete: {action : 'EducationController@delete'}
     },
-    '/profile/education/:profileId': {
+    '/profiles/:profileId/educations': {
         get: {action: 'EducationController@getByProfile'}
     }
-}
+};

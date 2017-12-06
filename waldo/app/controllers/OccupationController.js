@@ -24,8 +24,8 @@ class OccupationController {
                         data: {
                             id: Occupation._id,
                             type: 'Occupation',
-                            attributes: Occupation
-                        }
+                        },
+                        attributes: occupation
                     });
                 }
             });
@@ -34,7 +34,7 @@ class OccupationController {
 
     getOne() {
         return (req, res) => {
-            Occupation.findOne({_id: req.params.OccupationId}, {}, (err, occupation) => {
+            Occupation.findOne({ _id: req.params.OccupationId }, {}, (err, occupation) => {
                 if (err) {
                     res.status(500).send(err);
                 } else if (occupation == null) {
@@ -44,8 +44,8 @@ class OccupationController {
                         data: {
                             id: occupation._id,
                             type: 'Occupation',
-                            attributes: Occupation
-                        }
+                        },
+                        attributes: occupation
                     });
                 }
             });
@@ -54,7 +54,7 @@ class OccupationController {
 
     delete() {
         return (req, res) => {
-            Occupation.remove({_id: req.parans.OccupationId}, (err) => {
+            Occupation.remove({ _id: req.parans.OccupationId }, (err) => {
                 if (err) {
                     res.status(500).send(err);
                 } else {
@@ -63,6 +63,7 @@ class OccupationController {
                             id: 1,
                             type: 'Message',
                             attributes: {
+                                id: 1,
                                 message: "Occupation Document was deleted. {_id: " + req.params.OccupationId + "}"
                             }
                         }
@@ -75,7 +76,7 @@ class OccupationController {
     update() {
         return (req, res) => {
             const requestOccupation = req.body.data.attributes;
-            Occupation.findOne({_id: req.params.OccupationId}, {}, (err, occupation) => {
+            Occupation.findOne({ _id: req.params.OccupationId }, {}, (err, occupation) => {
                 if (err) {
                     res.status(500).send(err);
                 } else if (occupation == null) {
@@ -84,13 +85,15 @@ class OccupationController {
                     let updatedOccupation = {
                         name: requestOccupation.name || Occupation.name,
                     };
-                    Occupation.findOneAndUpdate({_id: occupation._id}, updatedOccupation, {}, (err, callbackOccupation) => {
+                    Occupation.findOneAndUpdate({ _id: occupation._id }, updatedOccupation, {}, (err, callbackOccupation) => {
                         if (err) {
                             res.status(500).send(err);
                         } else {
                             res.json({
-                                id: callbackOccupation._id,
-                                type: 'Occupation',
+                                data: {
+                                    id: callbackOccupation._id,
+                                    type: 'Occupation',
+                                },
                                 attributes: callbackOccupation
                             });
                         }
@@ -102,18 +105,18 @@ class OccupationController {
 
     getByProfile() {
         return (req, res) => {
-            Occupation.find({profileId: req.params.profileId}, {}, (err, Occupation) => {
+            Occupation.find({ profileId: req.params.profileId }, {}, (err, Occupation) => {
                 if (err) {
                     res.status(500).send(err);
                 } else {
                     res.json({
-                        data : Occupation.map((i) => {
+                        data: Occupation.map((i) => {
                             return {
                                 id: i._id,
                                 type: 'Occupation',
                                 attributes: i
                             };
-                        })
+                        }),
                     });
                 }
             });
