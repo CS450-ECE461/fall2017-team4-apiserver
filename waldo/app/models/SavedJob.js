@@ -6,7 +6,7 @@ var schema = new mongodb.Schema({
     _id: { type: String }
 });
 
-const COLLECTION_NAME = 'jobs';
-const MODEL_NAME = 'job';
+const COLLECTION_NAME = 'savedJob';
+const MODEL_NAME = 'savedJobs';
 
 module.exports = mongodb.resource(MODEL_NAME, schema, COLLECTION_NAME);
