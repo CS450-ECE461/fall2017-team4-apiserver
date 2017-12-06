@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = {
-    skills: 'Skill',
+    skills: 'Skill'
 };

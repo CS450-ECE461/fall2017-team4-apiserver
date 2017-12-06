@@ -13,7 +13,30 @@ const LOGIN_CLIENTS = {
   ember: 0,
 };
 
+let skills = [
+  "Java",
+  "C++",
+  "Photoshop",
+  "Python",
+  "PHP",
+  "MySQL",
+  "word",
+  "excel",
+  "time Mangagement",
+  "finger painting",
+  "under water basket weaving",
+  "fire mechanics",
+  "pro-gamer",
+  "Photography",
+  "speech",
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "Perl",
+  "Assembly"
+]
 module.exports = {
+  //creates 'client', or user.
   clients: dab.times (1, (i, opts, callback) => {
     let clientName = 'ember-waldo';
     let client = {
@@ -30,11 +53,12 @@ module.exports = {
     return callback (null, client);
   }),
 
-  skills: dab.times (20, function(i, opts, callback) {
-    const skillName = 'Skill ' + i;
-    var skill = {name: skillName};
+  //creates 20 skills and populates it into the mongodb.
+  skills: dab.times (20, (i, opts, callback)  => {
 
-    return callback(null, skill);
+    return callback(null, {
+      name: skills[i]
+    });
   }),
 
 };
