@@ -89,7 +89,7 @@ class EmployerController {
                                     detail: err
                                 }]
                             });
-                        } else if (jobs == null || jobs.length == 0) {
+                        } else if (jobs == null /*|| jobs.length == 0*/ ) {
                             res.status(404).json({
                                 errors: [{
                                     status: 404,
