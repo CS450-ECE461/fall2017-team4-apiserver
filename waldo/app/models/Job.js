@@ -4,8 +4,7 @@ var schema = new mongodb.Schema({
     description: { type: String },
     title: { type: String },
     contactInfo: { type: String },
-    city: { type: String },
-    state: { type: String },
+    location: { type: String },
     requirements: { type: String },
     _id: { type: String }
 });

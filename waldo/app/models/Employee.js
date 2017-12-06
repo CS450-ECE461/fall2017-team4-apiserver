@@ -8,7 +8,7 @@ var schema = new mongodb.Schema({
     _id: { type: String }
 });
 
-const COLLECTION_NAME = 'Employees';
-const MODEL_NAME = 'Employee';
+const COLLECTION_NAME = 'employees';
+const MODEL_NAME = 'employee';
 
 module.exports = mongodb.resource(MODEL_NAME, schema, COLLECTION_NAME);
