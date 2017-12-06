@@ -6,6 +6,8 @@ var schema = new mongodb.Schema({
     contactInfo: { type: String },
     location: { type: String },
     requirements: { type: String },
+    companyId: { type: String },
+    occupationId: { type: String },
     _id: { type: String }
 });
 
