@@ -115,7 +115,13 @@ class EmployerController {
                                         })
                                     }
                                 },
-                                included: jobs
+                                included: jobs.map((job) => {
+                                    return {
+                                        id: job._id,
+                                        type: "Job",
+                                        attributes: job
+                                    };
+                                })
                             });
                         }
                     });
