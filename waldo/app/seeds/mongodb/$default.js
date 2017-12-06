@@ -17,6 +17,7 @@ let skills = ["Java","C++","Photoshop","Python","PHP","MySQL","word","excel","ti
 //let companies = ["Apple","Microsoft","IBM","Amazon","Google","Cisco","Intel","Oracle","Qualcomm"]
 let companies = 
 [
+<<<<<<< HEAD
   {"description" : "Technology company most known for their phones.", "name" : "Apple", "location" : "Cupertino, California", "_idd" : "5a02944ad05618478a1717dj"},
   {"description" : "Technology company most known for their gaming console.", "name" : "Microsoft", "location" : "Redmond, Washington", "_idd" : "6a02944ad05618478a1717dj"},
   {"description" : "Technology company most known for their work in AI.", "name" : "IBM", "location" : "Armonk, New York", "_id" : "7a02944ad05618478a1717dj"},
@@ -27,6 +28,18 @@ let companies =
   {"description" : "Technology company most known for their database software.", "name" : "Oracle", "location" : "Redwood Shores, California", "_idd" : "2a02944ad05618478a1717dj"},
   {"description" : "Technology company most known for their computer chips", "name" : "Qualcomm", "location" : "San Diego, California", "_idd" : "3a02944ad05618478a1717dj"},
   {"description" : "Technology company most known for their customer relationship management product.", "name" : "SalesForce", "location" : "San Francisco, California", "_idd" : "4a02944ad05618478a1717dj"}
+=======
+  {"description" : "Technology company most known for their phones.", "name" : "Apple", "location" : "Cupertino, California", "_id" : "5a02944ad05618478a1717dj"},
+  {"description" : "Technology company most known for their gaming console.", "name" : "Microsoft", "location" : "Redmond, Washington", "_id" : "5a02944ad05618478a1717dj"},
+  {"description" : "Technology company most known for their work in AI.", "name" : "IBM", "location" : "Armonk, New York", "_id" : "5a02944ad05618478a1717dj"},
+  {"description" : "Technology company most known for AWS and their online shopping website.", "name" : "Amazon", "location" : "Seattle, Washington", "_id" : "5a02944ad05618478a1717dj"},
+  {"description" : "Technology company most known for their search engine.", "name" : "Google", "location" : "Mountain View, California", "_id" : "5a02944ad05618478a1717dj"},
+  {"description" : "Technology company most known for their IoT and computer security services.", "name" : "Cisco", "location" : "San Jose, California", "_id" : "5a02944ad05618478a1717dj"},
+  {"description" : "Technology company most known for their computer chips.", "name" : "Intel", "location" : "Santa Clara, California", "_id" : "5a02944ad05618478a1717dj"},
+  {"description" : "Technology company most known for their database software.", "name" : "Oracle", "location" : "Redwood Shores, California", "_id" : "5a02944ad05618478a1717dj"},
+  {"description" : "Technology company most known for their computer chips", "name" : "Qualcomm", "location" : "San Diego, California", "_id" : "5a02944ad05618478a1717dj"},
+  {"description" : "Technology company most known for their customer relationship management product.", "name" : "SalesForce", "location" : "San Francisco, California", "_id" : "5a02944ad05618478a1717dj"}
+>>>>>>> 865a578e1515dfc6749819fb01e4363dc8007c01
 ]
 module.exports = {
   //creates 'client', or user.
