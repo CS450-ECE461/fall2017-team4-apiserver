@@ -5,6 +5,7 @@ var schema = new mongodb.Schema({
     name: { type: String },
     phoneNumber: { type: String },
     title: { type: String },
+    image: { type: String },
     _id: { type: String }
 });
 

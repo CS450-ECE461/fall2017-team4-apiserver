@@ -1,7 +1,7 @@
 const mongodb = require('@onehilltech/blueprint-mongodb');
 
 var schema = new mongodb.Schema({
-    icon: { type: String }, //This is a url to a file in S3
+    image: { type: String }, //This is a url to a file in S3
     title: { type: String },
     schoolName: { type: String },
     location: { type: String },
