@@ -18,7 +18,7 @@ let skills = ["Java","C++","Photoshop","Python","PHP","MySQL","word","excel","ti
 let companies = 
 [
   {description : "Technology company most known for their phones.", name : "Apple", location : "Cupertino, California", _id : "5a02944ad05618478a1717dj"},
-  {description : "Technology company most known for their gaming console.", name : "Microsoft", "location" : "Redmond, Washington", _id : "6a02944ad05618478a1717dj"},
+  {description : "Technology company most known for their gaming console.", name : "Microsoft", location : "Redmond, Washington", _id : "6a02944ad05618478a1717dj"},
   {description : "Technology company most known for their work in AI.", name : "IBM", location : "Armonk, New York", _id : "7a02944ad05618478a1717dj"},
   {description : "Technology company most known for AWS and their online shopping website.", name : "Amazon", location : "Seattle, Washington", _id : "8a02944ad05618478a1717dj"},
   {description : "Technology company most known for their search engine.", name : "Google", location : "Mountain View, California", _id : "9a02944ad05618478a1717dj"},
