@@ -17,39 +17,39 @@ class UserController {
 
     /**
      * This function returns a user given an accountId.
-    */
+     */
     get() {
         return (req, res) => {
-            User.findOne({_id: req.params.accountId}, {}, (err, user) => {
+            User.findOne({ _id: req.params.accountId }, {}, (err, user) => {
                 if (err) {
                     res.status(500).send(err);
                 } else if (user == null) {
                     res.status(404).send("User Not found")
                 } else {
 
-                    Profile.findOne({_id: user.profileId}, {},(err, profile) => {
+                    Profile.findOne({ _id: user.profileId }, {}, (err, profile) => {
                         if (err) {
                             res.status(500).send(err);
                         } else if (profile == null) {
                             res.status(404).send("User Not found")
                         } else {
 
-                            Education.find({profileId: profile._id}, {}, (err, education) => {
+                            Education.find({ profileId: profile._id }, {}, (err, education) => {
                                 if (err) {
                                     res.status(500).send(err);
                                 }
 
-                                Experience.find({profileId: profile._id}, {}, (err, expirience) => {
+                                Experience.find({ profileId: profile._id }, {}, (err, expirience) => {
                                     if (err) {
                                         res.status(500).send(err);
                                     }
 
-                                    Occupation.find({profileId: profile._id}, {}, (err, occupation) => {
+                                    Occupation.find({ profileId: profile._id }, {}, (err, occupation) => {
                                         if (err) {
                                             res.status(500).send(err);
                                         }
 
-                                        ProfileSkillAssociation.find({profileId: profile._id}, {}, (err, skill) => {
+                                        ProfileSkillAssociation.find({ profileId: profile._id }, {}, (err, skill) => {
                                             if (err) {
                                                 res.status(500).send(err);
                                             }
@@ -91,14 +91,14 @@ class UserController {
                                                                 id: e._id
                                                             };
                                                         })
-                                                    }                      
+                                                    }
                                                 }
                                             });
 
-                                            included.concat(skill);
-                                            included.concat(occupation);
-                                            included.concat(education);
-                                            included.concat(expirience);
+                                            included = included.concat(skill);
+                                            included = included.concat(occupation);
+                                            included = included.concat(education);
+                                            included = included.concat(expirience);
 
                                             res.json({
                                                 data: {
@@ -129,24 +129,24 @@ class UserController {
 
     /**
      * Returns a JSON containing user information. 
-    */
+     */
     create() {
         return (req, res) => {
-            
+
             if (req.body && req.body.data && req.body.data.attributes) {
 
                 const userData = {
                     firstName: req.body.data.attributes.firstName,
-                    lastName:  req.body.data.attributes.lastName,
+                    lastName: req.body.data.attributes.lastName,
                     city: req.body.data.attributes.city,
                     state: req.body.data.attributes.state,
                     radius: req.body.data.attributes.radius
                 };
                 const profileId = mongodb.Types.ObjectId();
-                
+
                 User.create({
                     firstName: userData.firstName,
-                    lastName:  userData.lastName,
+                    lastName: userData.lastName,
                     city: userData.city,
                     state: userData.state,
                     radius: userData.radius,
@@ -180,7 +180,7 @@ class UserController {
                                 },
                                 experience: {
                                     data: []
-                                }                      
+                                }
                             }
                         });
                         res.json({
