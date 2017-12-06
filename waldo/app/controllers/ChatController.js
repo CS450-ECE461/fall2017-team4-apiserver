@@ -126,7 +126,7 @@ class ChatController {
                             detail: err
                         }]
                     });
-                } else if (messages == null || messages.length == 0) {
+                } else if (conversations == null || conversations.length == 0) {
                     res.status(404).json({
                         errors: [{
                             status: 404,
