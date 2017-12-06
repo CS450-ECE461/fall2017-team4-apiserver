@@ -42,7 +42,7 @@ for (var i = 0; i < 10; i++) {
     //for every type of job
     for (var j = 0; j < 5; j++) {
         //Getting an error for duplicate keys from dab. I'm guessing this is where it is happening.
-        jobs.push({ description: jobDescriptions[j], title: jobTitles[j], contactInfo: "(317)917-8844", location: "California", companyId: [i] });
+        jobs.push({ description: jobDescriptions[j], title: jobTitles[j], contactInfo: "(317)917-8844", location: companies[i].location, companyId: ids[i] });
     }
 
 }
