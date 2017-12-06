@@ -2,5 +2,6 @@
 
 module.exports = {
     skills: 'Skill',
-    companies: 'Company'
+    companies: 'Company',
+    jobs: 'Job'
 };
