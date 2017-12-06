@@ -5,6 +5,7 @@ const ObjectId = require('@onehilltech/blueprint-mongodb').Types.ObjectId;
 const Company = require('../models/Company');
 const EmployeeJobAssociation = require('../models/EmployeeJobAssociation');
 const Employee = require('../models/Employee');
+const Job = require('../models/Job');
 
 class EmployerController {
 
